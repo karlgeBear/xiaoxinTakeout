@@ -22,7 +22,7 @@
     "lib-flexible": "^0.3.2",
     "postcss-px2rem": "^0.3.0",
     "stylus": "^0.55.0",
-    "stylus-loader": "^6.1.0",
+    "stylus-loader": "3.0.2",
     "vue-template-compiler": "^2.6.11"
   },
   "eslintConfig": {
