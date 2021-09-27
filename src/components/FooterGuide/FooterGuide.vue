@@ -43,8 +43,8 @@ export default {
 
 </script>
 <style scoped lang="stylus" rel="stylesheet/stylus">
+  @import '../../common/stylus/mixins.styl';
   .footer-guide
-    @import '../../common/stylus/mixins.styl';
     top-border-1px(#cccccc)
     display flex
     position fixed
@@ -52,6 +52,7 @@ export default {
     bottom 0
     height 50px
     width 100%
+    background-color white
     .guide-item
       display flex
       flex-direction column
