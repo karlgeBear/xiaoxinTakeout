@@ -4,7 +4,7 @@ const px2rem = require('postcss-px2rem') //postcss的一个插件
 
 module.exports = { // 只能写vue封装的配置
   //runtimeCompiler: true, //配置vue带编译器的版本
-  //lintOnSave: false, // 关闭Eslint规则
+  lintOnSave: false, // 关闭Eslint规则
   publicPath:"./", //用法和webpack本身的output.publickPath用法一致
 
   css: { // 添加postcss配置
@@ -18,6 +18,21 @@ module.exports = { // 只能写vue封装的配置
       }
     }
   },
+  devServer: {
+    host: '0.0.0.0', //表示监听本机所有的 IP
+    port: 3000,
+    open: true,
+    proxy: {
+      '/api': { // 匹配所有以 '/api'开头的请求路径
+        target: 'http://localhost:4000', // 代理目标的基础路径
+        changeOrigin: true, // 支持跨域
+        pathRewrite: { // 重写路径: 去掉路径中开头的'/api'
+          '^/api': ''
+        }
+      },
+    }
+  },
+
   configureWebpack: { // 内部写webpack原生配置
     resolve: {
       /* 
