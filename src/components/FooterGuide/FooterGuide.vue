@@ -35,8 +35,19 @@ export default {
   },
   methods:{
     goto (path){
-      //编程式路由跳转
-      this.$router.replace(path)
+      // 方案1: 如果点击当前项，没有任何效果
+      // if (path !== this.$route.path){
+      //   //编程式路由跳转
+      //   this.$router.replace(path)
+      // }
+
+      // 方案2：如果点击当前项，当前页面刷新
+      if (path !== this.$route.path){
+        //编程式路由跳转
+        this.$router.replace(path)
+      }else {
+        window.location = path
+      }
     }
   }
 }
