@@ -2,7 +2,7 @@
   <header class="header">
     <slot name="search"></slot>
     <a class="header_title">
-      <span class="header_title_text ellipsis">{{title}}</span>
+      <span class="header_title_text ellipsis">{{this.$store.state.address}}</span>
     </a>
     <slot name="login"></slot>
   </header>
@@ -12,6 +12,9 @@
   export default {
     props: {
       title: String
+    },
+    mounted(){
+      console.log(this.$store.state.address)
     }
   }
 
