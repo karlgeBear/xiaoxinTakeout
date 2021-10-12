@@ -30,7 +30,7 @@ instance.interceptors.request.use((config) => {
 //添加响应拦截器
 instance.interceptors.response.use(
   response => {
-    console.log('res interceptors')
+    //console.log('res interceptors')
     //return response
     //2. 异步请求成功的数据不是response, 而是response.data
     return response.data
@@ -39,7 +39,7 @@ instance.interceptors.response.use(
   error => {
     //return Promise.reject(error)
     //统一处理请求异常
-    alert('请求出错')
+    alert(error)
     return new Promise(() => {}) // 返回一个空的promise => 中断promise链
   }
 )
