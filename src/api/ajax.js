@@ -10,6 +10,8 @@
 
 import axios from 'axios'
 import qs from 'qs'
+import 'mint-ui/lib/style.css'
+import { Indicator } from 'mint-ui'
 
 const instance = axios.create({
   // baseURL: 'http://localhost:4000', //出现跨域问题
@@ -19,6 +21,8 @@ const instance = axios.create({
 
 //添加请求拦截器
 instance.interceptors.request.use((config) => {
+  // 利用mint-ui显示旋转动画 loading
+  Indicator.open();
   console.log('req interceptors')
 // 3. 对post请求参数进行ulencode处理, 而不使用默认的json方式(后台接口不支持)
   const data = config.data
@@ -30,6 +34,8 @@ instance.interceptors.request.use((config) => {
 //添加响应拦截器
 instance.interceptors.response.use(
   response => {
+    // 隐藏loading
+    Indicator.close()
     //console.log('res interceptors')
     //return response
     //2. 异步请求成功的数据不是response, 而是response.data
@@ -37,6 +43,8 @@ instance.interceptors.response.use(
 
   },
   error => {
+    // 隐藏loading
+    Indicator.close()
     //return Promise.reject(error)
     //统一处理请求异常
     alert(error)
