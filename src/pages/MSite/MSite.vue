@@ -3,7 +3,7 @@
     <!--首页头部-->
     <HeaderTop :title="address.name">
       <router-link slot="search" to="/search" class="header_search">
-        <i class="iconfont icon-sousuo"></i>
+        <i style="font-size: 25px;" class="iconfont icon-search"></i>
       </router-link>
       <router-link slot="login" to="/login" class="header_login">
         <span class="header_login_text">登录|注册</span>
@@ -12,14 +12,27 @@
     <!--首页导航-->
     <nav class="msite_nav">
       <div class="swiper-container">
-        <div class="swiper-wrapper">
-          <div class="swiper-slide" v-for="categorys,index in categorysArr2" :key="index">
-            <div class="link_to_food" v-for="cs,index in categorys" :key="index">
+        <div class="swiper-wrapper" v-if="categorys.length > 0">
+          <div
+            class="swiper-slide"
+            v-for="(categorys, index) in categorysArr2"
+            :key="index"
+          >
+            <div
+              class="link_to_food"
+              v-for="(cs, index) in categorys"
+              :key="index"
+            >
               <div class="food_container">
                 <img :src="'http://fuss10.elemecdn.com' + cs.image_url" />
               </div>
-              <span>{{cs.title}}</span>
+              <span>{{ cs.title }}</span>
             </div>
+          </div>
+        </div>
+        <div v-else>
+          <div class="food_container">
+            <img src="./images/msite_back.svg" alt="loading">
           </div>
         </div>
         <!-- Add Pagination -->
@@ -34,16 +47,29 @@
       </div>
       <div class="shop_container">
         <ul class="shop_list" v-if="shops.length > 0">
-          <li class="shop_li border-1px" v-for="(shop,index) in shops" :key="shop.id">
+          <li
+            class="shop_li border-1px"
+            v-for="(shop, index) in shops"
+            :key="shop.id"
+          >
             <a>
               <div class="shop_left">
-                <img class="shop_img" :src="'http://fuss10.elemecdn.com'+shop.image_path" />
+                <img
+                  class="shop_img"
+                  :src="'http://fuss10.elemecdn.com' + shop.image_path"
+                />
               </div>
               <div class="shop_right">
                 <section class="shop_detail_header">
-                  <h4 class="shop_title ellipsis">{{shop.name}}</h4>
+                  <h4 class="shop_title ellipsis">{{ shop.name }}</h4>
                   <ul class="shop_detail_ul">
-                    <li class="supports" v-for="support,index in shop.supports" :key="index">{{support.icon_name}}</li>
+                    <li
+                      class="supports"
+                      v-for="(support, index) in shop.supports"
+                      :key="index"
+                    >
+                      {{ support.icon_name }}
+                    </li>
                   </ul>
                 </section>
                 <section class="shop_rating_order">
@@ -55,18 +81,22 @@
                       <span class="star-item half"></span>
                       <span class="star-item off"></span>
                     </div>
-                    <div class="rating_section">{{shop.rating}}</div>
-                    <div class="order_section">月售{{shop.recent_order_num}}单</div>
+                    <div class="rating_section">{{ shop.rating }}</div>
+                    <div class="order_section">
+                      月售{{ shop.recent_order_num }}单
+                    </div>
                   </section>
                   <section class="shop_rating_order_right">
-                    <span class="delivery_style delivery_right">{{shop.delivery_mode.text}}</span>
+                    <span class="delivery_style delivery_right">{{
+                      shop.delivery_mode.text
+                    }}</span>
                   </section>
                 </section>
                 <section class="shop_distance">
                   <p class="shop_delivery_msg">
-                    <span>¥{{shop.float_minimum_order_amount}}起送</span>
+                    <span>¥{{ shop.float_minimum_order_amount }}起送</span>
                     <span class="segmentation">/</span>
-                    <span>{{shop.piecewise_agent_fee.tips}}</span>
+                    <span>{{ shop.piecewise_agent_fee.tips }}</span>
                   </p>
                 </section>
               </div>
@@ -74,11 +104,10 @@
           </li>
         </ul>
         <ul v-else>
-          <li><img src="./images//shop_back.svg" alt="loading"></li>
-          <li><img src="./images//shop_back.svg" alt="loading"></li>
-          <li><img src="./images//shop_back.svg" alt="loading"></li>
-          <li><img src="./images//shop_back.svg" alt="loading"></li>
-
+          <li><img src="./images//shop_back.svg" alt="loading" /></li>
+          <li><img src="./images//shop_back.svg" alt="loading" /></li>
+          <li><img src="./images//shop_back.svg" alt="loading" /></li>
+          <li><img src="./images//shop_back.svg" alt="loading" /></li>
         </ul>
       </div>
     </div>
@@ -87,81 +116,86 @@
 
 <script type='text/ecmascript-6'>
 import HeaderTop from "../../components/HeaderTop/HeaderTop.vue";
-import Swiper from 'swiper';
-import 'swiper/css/swiper.css';
-import { mapState } from 'vuex';
+import Swiper from "swiper";
+import "swiper/css/swiper.css";
+import { mapState } from "vuex";
 // import _ from 'lodash'
-import chunk from 'lodash/chunk'  //按需引入
+import chunk from "lodash/chunk"; //按需引入
 
 export default {
   components: {
     HeaderTop,
   },
   computed: {
-    ...mapState(['address','categorys','shops']), //等同于：stateName(){return this.$store.state['stateName']}
-    
+    ...mapState(["address", "categorys", "shops"]), //等同于：stateName(){return this.$store.state['stateName']}
+
     /* 
       根据一维数组生成二维数组
       包含所有分类的二维数组
       内部小组的长度最大是8
     */
     categorysArr() {
-      const { categorys } = this
-      const bigArr = []
-      let smallArr = []
+      const { categorys } = this;
+      const bigArr = [];
+      let smallArr = [];
 
       // 遍历一维数组
-      categorys.forEach(category => {
+      categorys.forEach((category) => {
         //只遍历一次，创建二维数组
         if (smallArr.length === 0) {
-          bigArr.push(smallArr)
+          bigArr.push(smallArr);
         }
-        smallArr.push(category)
+        smallArr.push(category);
 
         // 判断smallArr的长度是否为8
         if (smallArr.length === 8) {
           // 将samllArr清空，则遍历时又可创建一个数组
-          smallArr = []
+          smallArr = [];
         }
-      })
-      console.log(bigArr)
-      return bigArr
+      });
+      console.log(bigArr);
+      return bigArr;
     },
 
     // 利用lodash库来将一维数组拆分为二维数组
     categorysArr2() {
-      return chunk(this.categorys,8)
-    }
-
-
+      return chunk(this.categorys, 8);
+    },
   },
-  mounted() {
-    // 必须列表显示之后创建swiper对象轮播才正常
-/*     new Swiper ('.swiper-container', {
+  async mounted() {
+    this.$store.dispatch("getShops");
+    await this.$store.dispatch("getCategorys"); // dispatch返回的promise在数据更新且界面更新才成功
+    new Swiper(".swiper-container", {
       loop: true, // 循环模式选项
       //autoplay:true,
-
       // 如果需要分页器
       pagination: {
-        el: '.swiper-pagination',
-      }
-    }), */
-    this.$store.dispatch('getCategorys')
-    this.$store.dispatch('getShops')     
+        el: ".swiper-pagination",
+      },
+    });
   },
-  watch:{
-    categorys(value){
-      new Swiper ('.swiper-container', {
-        loop: true, // 循环模式选项
-        //autoplay:true,
-        // 如果需要分页器
-        pagination: {
-          el: '.swiper-pagination',
-        }
-      })
-    }
-  }
+  watch: {
+    /* 
+     1. 更新数据
+     2. 立即同步调用监视回调函数  
+     3. 异步更新界面
+    */
+    /*     categorys(){  // 监视categorys值，一改变值 执行此函数 (此时还没有显示列表数据)
 
+    // 将回调延迟到下次 DOM 更新循环之后执行。在修改数据之后立即使用它，然后等待 DOM 更新。
+      this.$nextTick(() => {
+        // 必须列表显示之后创建swiper对象轮播才正常
+        new Swiper ('.swiper-container', {
+          loop: true, // 循环模式选项
+          //autoplay:true,
+          // 如果需要分页器
+          pagination: {
+            el: '.swiper-pagination',
+          }
+        })
+      })
+    } */
+  },
 };
 </script>
 <style scoped lang='stylus' rel='stylesheet/stylus'>
