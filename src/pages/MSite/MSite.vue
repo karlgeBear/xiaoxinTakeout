@@ -2,9 +2,9 @@
   <section class="msite">
     <!--首页头部-->
     <HeaderTop :title="address.name">
-      <router-link slot="search" to="/search" class="header_search">
-        <i style="font-size: 25px;" class="iconfont icon-search"></i>
-      </router-link>
+      <span slot="search" @click="$router.push('/search')" class="header_search">
+        <i class="iconfont icon-search"></i>
+      </span>
       <router-link slot="login" to="/login" class="header_login">
         <span class="header_login_text">登录|注册</span>
       </router-link>
