@@ -6,7 +6,8 @@ mutation方法可以包含异步操作和逻辑处理代码
 import {
   reqAddress,
   reqCategorys,
-  reqShops
+  reqShops,
+  reSendCode
 } from '../api'
 
 import {
@@ -28,7 +29,8 @@ export default {
       commit(RECEIVE_ADDRESS,address)
     }
   },
-
+  
+  // 获取食品类别
   async getCategorys({commit}) {
     //发异步请求
     const result = await reqCategorys()
@@ -40,6 +42,7 @@ export default {
     }
   },
 
+  // 获取商家店铺
   async getShops({commit,state}) {
     const {longitude,latitude} = state
     //发异步请求
@@ -49,5 +52,8 @@ export default {
       const shops = result.data
       commit(RECEIVE_SHOPS,shops)
     }
-  }
+  },
+
+  //获取图形验证码
+  //reSendCode()
 }

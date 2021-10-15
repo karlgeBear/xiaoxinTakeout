@@ -5,19 +5,19 @@
       <section class="profile-number" @click="$router.push('/login')">
         <a href="javascript:" class="profile-link">
           <div class="profile_image">
-            <i class="iconfont icon-person"></i>
+            <i class="iconfont icon-yonghu"></i>
           </div>
           <div class="user-info">
             <p class="user-info-top">登录/注册</p>
             <p>
               <span class="user-icon">
-                <i class="iconfont icon-shouji icon-mobile"></i>
+                <i class="iconfont icon-phone-iphone"></i>
               </span>
               <span class="icon-mobile-number">暂无绑定手机号</span>
             </p>
           </div>
           <span class="arrow">
-            <i class="iconfont icon-jiantou1"></i>
+            <i class="iconfont icon-hangdongjiantou"></i>
           </span>
         </a>
       </section>
@@ -120,7 +120,7 @@ export default {
           border-radius 50%
           overflow hidden
           vertical-align top
-          .icon-person
+          .icon-yonghu
             background #e4e4e4
             font-size 62px
         .user-info
@@ -139,8 +139,8 @@ export default {
               margin-right 5px
               width 20px
               height 20px
-              .icon-mobile
-                font-size 30px
+              .icon-phone-iphone
+                font-size 25px
                 vertical-align text-top
             .icon-mobile-number
               font-size 14px
@@ -151,9 +151,9 @@ export default {
           position absolute
           right 15px
           top 40%
-          .icon-jiantou1
+          .icon-hangdongjiantou
             color #fff
-            font-size 5px
+            font-size 25px
     .profile_info_data
       bottom-border-1px(#e4e4e4)
       width 100%

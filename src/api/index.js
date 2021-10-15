@@ -15,8 +15,34 @@ export const reqCategorys = () => ajax('/index_category')
 export const reqShops = ({longitude,latitude}) => ajax('/shops',{params: {longitude,latitude}})
 
 // 4、根据经纬度和关键字搜索商铺列表
+
 // 5、获取一次性验证码
+export const reSendCode = (phone) => ajax({
+  method: 'GET',
+  url: BASE + '/sendcode',
+  params: { phone }
+})
+
 // 6、用户名密码登陆
+export const reqPwdLogin = ({ name, pwd, captcha }) => ajax({
+  method: 'POST',
+  url: BASE + '/login_pwd',
+  data: {
+    name,
+    pwd,
+    captcha
+  }
+})
+
 // 7、发送短信验证码
+export const reqSmsLogin = (phone, code) => ajax({
+  method: 'POST',
+  url: BASE + '/login_sms',
+  data: {
+    phone,
+    code
+  }
+})
+
 // 8、手机号验证码登陆
 // 9、根据会话获取用户信息

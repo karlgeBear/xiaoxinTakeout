@@ -1,5 +1,4 @@
 # xiaoxintakeout
-
 ## 下载了相关依赖
 0. vuex、vue-router、mint-ui
 1. 自动计算rem：yarn add lib-flexible postcss-px2rem -D
