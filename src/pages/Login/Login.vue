@@ -9,17 +9,19 @@
           </div>
         </div>
         <div class="login_content">
-          <form>
+          <form @submit.prevent="login">
             <div :class="{on:isShowSms}">
               <section class="login_message">
                 <input type="tel" maxlength="11" placeholder="手机号" v-model="phone">
                 <button 
                 :disabled="!isRightPone" class="get_verification" 
                 :class="{right_phone_number:isRightPone}" 
-                @click.prevent="sendCode()">获取验证码</button>
+                @click.prevent="getCode()" 
+                v-show="codeText">获取验证码</button>
+                <button disabled="disabled" class="get_verification" v-show="!codeText">请{{computeTime}}s后再获取</button>
               </section>
               <section class="login_verification">
-                <input type="tel" maxlength="8" placeholder="验证码">
+                <input type="tel" maxlength="8" placeholder="验证码"  v-model="code">
               </section>
               <section class="login_hint">
                 温馨提示：未注册小新外卖帐号的手机号，登录时将自动注册，且代表已同意
@@ -29,18 +31,18 @@
             <div :class="{on:!isShowSms}">
               <section>
                 <section class="login_message">
-                  <input type="tel" maxlength="11" placeholder="手机/邮箱/用户名">
+                  <input type="tel" maxlength="11" placeholder="手机/邮箱/用户名" v-model="name">
                 </section>
                 <section class="login_verification">
-                  <input :type="isShowPwd ? 'text': 'password'" maxlength="8" placeholder="密码">
+                  <input :type="isShowPwd ? 'text': 'password'" maxlength="8" placeholder="密码" v-model="pwd">
                   <div class="switch_button" :class="isShowPwd ? 'on':'off'" @click="isShowPwd = !isShowPwd">
                     <div class="switch_circle" :class="{right:isShowPwd}"></div>
                     <span class="switch_text">{{isShowPwd ? 'abc' : ''}}</span>
                   </div>
                 </section>
                 <section class="login_message">
-                  <input type="text" maxlength="11" placeholder="验证码">
-                  <img class="get_verification" src="./images/captcha.svg" alt="captcha">
+                  <input type="text" maxlength="11" placeholder="验证码" >
+                  <img class="get_verification" src="./images/captcha.svg" alt="captcha" @click="changeCaptcha">
                 </section>
               </section>
             </div>
@@ -48,21 +50,36 @@
           </form>
           <a href="javascript:;" class="about_us">关于我们</a>
         </div>
+        <alert-tip v-if="alertShow" :alertText="alertText"/>
         <a href="javascript:" class="go_back" @click="$router.replace('/profile')">
           <i class="iconfont icon-fanhui"></i>
         </a>
       </div>
     </section>
+    
 </template>
 
 <script type='text/ecmascript-6'>
+import { reSendCode,reqSmsLogin } from '../../api'
+import alertTip from '../../components/alertTip/alertTip.vue'
 export default {
   name:'Login',
+  components: {
+    alertTip,
+  },
   data () {
     return {
       isShowSms: true, //true：显示短信登入界面 ，false：显示密码登入界面
       phone:'',
-      isShowPwd:false   //判断密码是否显示
+      isShowPwd:false,   //判断密码是否显示
+      code: '',  //短信验证码
+      codeText: true, 
+      name: '', //用户名
+      pwd: '', // 密码
+      captcha: '', // 图片验证码
+      computeTime: 0, //计时时间
+      alertText: '', // 提示框文本
+      alertShow: false, //是否显示提示框
     }
   },
   computed:{
@@ -72,8 +89,53 @@ export default {
     }
   },
   methods:{
-    sendCode(){
-      alert('getcode')
+    // 点击短信验证码异步发送短信
+    async getCode(){
+      // 倒计时再发送手机验证码
+      if (this.isRightPone) { // 输入了合法的手机号
+        // 开始倒计时
+        this.computeTime = 60
+        // 启动循环定时器, 每隔1s减少1
+        const intervalId = setInterval(() => {
+          this.computeTime--
+          //如果到时, 停止计时
+          if (this.computeTime === 0) {
+            clearInterval(intervalId)
+            this.codeText = true
+          }
+        }, 1000)
+      }
+      // 发送手机验证码
+      const result = await reSendCode(this.phone)
+      if (result.code === 0){
+        this.codeText = false
+        //this.isRightPone = false
+        //this.phone = ''
+      }
+      //if (result.code === 0)
+    },
+
+    //更新图形验证码
+    changeCaptcha(event){
+      event.target.src = '/api/captcha?time=' + new Date()
+    },
+
+    //登录
+    async login(){
+      if (this.isShowSms){
+        let {isRightPone, phone, code } = this
+        if(!isRightPone){
+          this.alertShow = true
+          this.alertText = '手机号码格式错误'
+          return  //结束程序向下执行
+        }else if(!/^\d{6}$/.test(code)){
+          this.alertShow = true
+          this.alertText = '验证码输入错误'
+          return
+        }
+        // 提交登入请求
+        let result = await reqSmsLogin(phone,code)
+      }
     }
   }
 }

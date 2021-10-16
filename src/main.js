@@ -2,6 +2,12 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router' 
 import store from './vuex/store'
+import { Button } from 'mint-ui';
+
+Vue.component(Button.name, Button);
+
+
+
 
 import 'lib-flexible'
 

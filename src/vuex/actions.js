@@ -7,7 +7,6 @@ import {
   reqAddress,
   reqCategorys,
   reqShops,
-  reSendCode
 } from '../api'
 
 import {
@@ -54,6 +53,5 @@ export default {
     }
   },
 
-  //获取图形验证码
-  //reSendCode()
+
 }

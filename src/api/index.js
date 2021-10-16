@@ -16,12 +16,7 @@ export const reqShops = ({longitude,latitude}) => ajax('/shops',{params: {longit
 
 // 4、根据经纬度和关键字搜索商铺列表
 
-// 5、获取一次性验证码
-export const reSendCode = (phone) => ajax({
-  method: 'GET',
-  url: BASE + '/sendcode',
-  params: { phone }
-})
+// 5、获取图形验证码
 
 // 6、用户名密码登陆
 export const reqPwdLogin = ({ name, pwd, captcha }) => ajax({
@@ -35,14 +30,20 @@ export const reqPwdLogin = ({ name, pwd, captcha }) => ajax({
 })
 
 // 7、发送短信验证码
+export const reSendCode = (phone) => ajax({
+  method: 'GET',
+  url: '/sendcode',
+  params: { phone }
+})
+
+// 8、手机号验证码登陆(登入成功则把手机号存入数据库，把验证码删除)
 export const reqSmsLogin = (phone, code) => ajax({
   method: 'POST',
-  url: BASE + '/login_sms',
+  url: '/login_sms',
   data: {
     phone,
     code
   }
 })
 
-// 8、手机号验证码登陆
 // 9、根据会话获取用户信息
