@@ -41,7 +41,7 @@
                   </div>
                 </section>
                 <section class="login_message">
-                  <input type="text" maxlength="11" placeholder="验证码" >
+                  <input type="text" maxlength="11" placeholder="验证码" v-model="captcha">
                   <img class="get_verification" src="./images/captcha.svg" alt="captcha" @click="changeCaptcha">
                 </section>
               </section>
@@ -122,6 +122,7 @@ export default {
 
     //登录
     async login(){
+      // 手机密码登录
       if (this.isShowSms){
         let {isRightPone, phone, code } = this
         if(!isRightPone){
@@ -135,6 +136,8 @@ export default {
         }
         // 提交登入请求
         let result = await reqSmsLogin(phone,code)
+      }else {  // 用户密码登录
+
       }
     }
   }
