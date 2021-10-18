@@ -8,7 +8,7 @@
             <i class="iconfont icon-yonghu"></i>
           </div>
           <div class="user-info">
-            <p class="user-info-top">登录/注册</p>
+            <p class="user-info-top">{{$store.state.user.name || '登录/注册'}}</p>
             <p>
               <span class="user-icon">
                 <i class="iconfont icon-phone-iphone"></i>
@@ -94,8 +94,12 @@
 </template>
 
 <script type='text/ecmascript-6'>
+import { mapState } from 'vuex'
 import HeaderTop from '../../components/HeaderTop/HeaderTop.vue'
 export default {
+  computed:{
+    ...mapState(['user'])  // 相当于 user(){return this.$store.state['user']}
+  },
   components: {
     HeaderTop
   }
