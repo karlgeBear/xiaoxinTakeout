@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <form>
     <mt-button type="danger">{{alertText}}</mt-button>
-  </div>
+  </form>
 
 </template>
 
