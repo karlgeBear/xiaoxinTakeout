@@ -42,15 +42,15 @@
                 </section>
                 <section class="login_message">
                   <input type="text" maxlength="11" placeholder="验证码" v-model="captcha">
-                  <img class="get_verification" src="./images/captcha.svg" alt="captcha" @click="changeCaptcha">
+                  <img class="get_verification" src="/api/captcha" alt="captcha" @click="changeCaptcha">
                 </section>
               </section>
             </div>
             <button class="login_submit">登录</button>
+            <alert-tip v-if="alertShow" :alertText="alertText" @closeTip="closeTip"/>
           </form>
           <a href="javascript:;" class="about_us">关于我们</a>
         </div>
-        <alert-tip v-if="alertShow" :alertText="alertText"/>
         <a href="javascript:" class="go_back" @click="$router.replace('/profile')">
           <i class="iconfont icon-fanhui"></i>
         </a>
@@ -60,7 +60,7 @@
 </template>
 
 <script type='text/ecmascript-6'>
-import { reSendCode,reqSmsLogin } from '../../api'
+import { reSendCode,reqSmsLogin,reqPwdLogin } from '../../api'
 import alertTip from '../../components/alertTip/alertTip.vue'
 export default {
   name:'Login',
@@ -123,6 +123,7 @@ export default {
     //登录
     async login(){
       // 手机密码登录
+       //输入格式验证
       if (this.isShowSms){
         let {isRightPone, phone, code } = this
         if(!isRightPone){
@@ -137,8 +138,44 @@ export default {
         // 提交登入请求
         let result = await reqSmsLogin(phone,code)
       }else {  // 用户密码登录
+        let { name, pwd, captcha} = this
+        //用户输入格式验证
+        if (!name){
+          console.log(112)
+          this.alertShow = true
+          this.alertText = '请输入用户名'
+          return
+        }else if(!/^\d{8}$/.test(pwd)){
+          this.alertShow = true
+          this.alertText = '请输入密码'
+          return
+        }else if(!/^[0-9a-z]{4}$/.test(captcha)){
+          this.alertShow = true
+          this.alertText = '请输入图片对应的的验证码'
+          return
+        }
+        // 提交登录请求
+        //{"code":0,"data":{"_id":"616d1a12ad711d1c1c1c8d22","name":"test2","token":"e。。。。。。"}}
+        let result = await reqPwdLogin({ name, pwd, captcha })
 
+        if (result.code === 0){
+          // 得到用户信息
+          const userinfo = result.data
+          console.log(userinfo)
+          // 将userinfo保存到state中
+          this.$store.dispatch('recordUser',userinfo)
+          // 回退
+          this.$router.back()
+        }else {
+          this.alertShow = true
+          this.alertText = result.msg
+        }
       }
+    },
+
+    // 关闭提示框
+    closeTip () {
+        this.alertShow = false
     }
   }
 }
@@ -273,13 +310,13 @@ export default {
             margin-top 20px
             text-align center
             color #999
-        .go_back
-          position absolute
-          top 5px
-          left 5px
-          width 30px
-          height 30px
-          >.iconfont
-            font-size 20px
-            color #999
+      .go_back
+        position absolute
+        top 5px
+        left 5px
+        width 30px
+        height 30px
+        >.iconfont
+          font-size 20px
+          color #999
 </style>
