@@ -8,4 +8,6 @@ export default { //29.680861,115.992358
   address: {}, // 地址信息对象
   categorys: [], // 分类数组
   shops: [], //商家数组
+  token:localStorage.getItem('token_key'),
+  user:{} //登录用户信息对象
 }
