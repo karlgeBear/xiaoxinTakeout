@@ -21,7 +21,7 @@ export const reqShops = ({longitude,latitude}) => ajax('/shops',{params: {longit
 // 6、用户名密码登陆
 export const reqPwdLogin = ({ name, pwd, captcha }) => ajax({
   method: 'POST',
-  url: BASE + '/login_pwd',
+  url: '/login_pwd',
   data: {
     name,
     pwd,
@@ -46,4 +46,11 @@ export const reqSmsLogin = (phone, code) => ajax({
   }
 })
 
-// 9、根据会话获取用户信息
+// 9、根据会话获取用户信息（）
+/* 
+自动登陆的请求
+*/
+export const reqAutoLogin = (token) => ajax({
+  url: '/auto_login',
+  headers: { authorization: token }
+})
