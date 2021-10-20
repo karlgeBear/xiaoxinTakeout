@@ -14,6 +14,9 @@ export default {
   //   触发多个action，避免一个个dispatch
   //   ...mapActions(['getAddress','getCategorys','getShops'])
   // },
+  created(){
+    this.$store.dispatch('getUserInfo')
+  },
   mounted() {
     // 通知action异步获取address并保存到state
     this.$store.dispatch('getAddress')
