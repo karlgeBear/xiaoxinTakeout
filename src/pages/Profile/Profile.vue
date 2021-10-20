@@ -2,13 +2,13 @@
   <div>
     <section class="profile">
       <HeaderTop title="我的"/>
-      <section class="profile-number" @click="$router.push('/login')">
-        <a href="javascript:" class="profile-link">
+      <section class="profile-number">
+        <router-link :to="user._id ? '/logout' : '/login'" class="profile-link">
           <div class="profile_image">
             <i class="iconfont icon-yonghu"></i>
           </div>
           <div class="user-info">
-            <p class="user-info-top">{{$store.state.user.name || '登录/注册'}}</p>
+            <p class="user-info-top">{{user.phone || user.name || '登录/注册'}}</p>
             <p>
               <span class="user-icon">
                 <i class="iconfont icon-phone-iphone"></i>
@@ -19,7 +19,7 @@
           <span class="arrow">
             <i class="iconfont icon-hangdongjiantou"></i>
           </span>
-        </a>
+        </router-link>
       </section>
       <section class="profile_info_data border-1px">
         <ul class="info_data_list">

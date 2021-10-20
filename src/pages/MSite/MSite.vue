@@ -6,7 +6,7 @@
         <i class="iconfont icon-search"></i>
       </span>
       <router-link slot="login" to="/login" class="header_login">
-        <span class="header_login_text">登录|注册</span>
+        <span class="header_login_text">{{user._id ? '' : '登陆|注册'}}</span>
       </router-link>
     </HeaderTop>
     <!--首页导航-->
@@ -127,7 +127,7 @@ export default {
     HeaderTop,
   },
   computed: {
-    ...mapState(["address", "categorys", "shops"]), //等同于：stateName(){return this.$store.state['stateName']}
+    ...mapState(["address", "categorys", "shops","user"]), //等同于：stateName(){return this.$store.state['stateName']}
 
     /* 
       根据一维数组生成二维数组
