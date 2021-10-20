@@ -51,7 +51,7 @@
           </form>
           <a href="javascript:;" class="about_us">关于我们</a>
         </div>
-        <a href="javascript:" class="go_back" @click="$router.replace('/profile')">
+        <a href="javascript:" class="go_back" @click="$router.back()">
           <i class="iconfont icon-fanhui"></i>
         </a>
       </div>
@@ -120,6 +120,22 @@ export default {
       event.target.src = '/api/captcha?time=' + new Date()
     },
 
+    // login获取用户信息，保存到state中
+    getInfo(loginRes){
+      if (loginRes.code === 0){
+        // 得到用户信息
+        const userinfo = loginRes.data
+        console.log(userinfo)
+        // 将userinfo保存到state中
+        this.$store.dispatch('recordUser',userinfo)
+        // 回退
+        this.$router.back()
+      }else {
+        this.alertShow = true
+        this.alertText = loginRes.msg
+      }
+    },
+
     //登录
     async login(){
       // 手机密码登录
@@ -137,6 +153,8 @@ export default {
         }
         // 提交登入请求
         let result = await reqSmsLogin(phone,code)
+        // login获取用户信息，保存到state中
+        this.getInfo(result)
       }else {  // 用户密码登录
         let { name, pwd, captcha} = this
         //用户输入格式验证
