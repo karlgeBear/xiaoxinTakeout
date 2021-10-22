@@ -13,6 +13,7 @@
             方式3(首选)：利用dispatch返回的promise  ==》 dispatch返回的Promise在数据更新且界面更新之后才成功
     ```
 4. 实现按需引入：yarn add babel-plugin-component -D
+5. 生成随机数据，拦截 Ajax 请求：yarn add mockjs
 ## 引入了相关的库
 - 解决点击响应0.3s延时问题
     https://as.alipayobjects.com/g/component/fastclick/1.0.6/fastclick.js
