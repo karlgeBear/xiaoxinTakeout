@@ -54,3 +54,15 @@ export const reqAutoLogin = (token) => ajax({
   url: '/auto_login',
   headers: { authorization: token }
 })
+
+// 10. 获取mock提供的数据
+    //获取商家信息
+export const reqShopInfo = () => ajax('/info')
+    //获取商家菜单列表
+export const reqShopGoods = () => ajax('/goods')
+    //获取用户评价信息
+export const reqShopRatings = () => ajax('/ratings')
+
+// ajax('/info').then((response) => {
+//   console.log(response)
+// })

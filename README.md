@@ -14,6 +14,7 @@
     ```
 4. 实现按需引入：yarn add babel-plugin-component -D
 5. 生成随机数据，拦截 Ajax 请求：yarn add mockjs
+5. 解决移动端各种滚动场景：yarn add better-scroll
 ## 引入了相关的库
 - 解决点击响应0.3s延时问题
     https://as.alipayobjects.com/g/component/fastclick/1.0.6/fastclick.js
