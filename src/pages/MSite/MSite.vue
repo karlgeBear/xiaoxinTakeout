@@ -47,8 +47,9 @@
       </div>
       <div class="shop_container">
         <ul class="shop_list" v-if="shops.length > 0">
-          <li
-            class="shop_li border-1px"
+          <router-link class="shop_li border-1px"
+            
+            to="/shop"
             v-for="(shop, index) in shops"
             :key="shop.id"
           >
@@ -101,7 +102,7 @@
                 </section>
               </div>
             </a>
-          </li>
+          </router-link>
         </ul>
         <ul v-else>
           <li><img src="./images//shop_back.svg" alt="loading" /></li>
@@ -163,8 +164,9 @@ export default {
     },
   },
   async mounted() {
-    this.$store.dispatch("getShops");
-    await this.$store.dispatch("getCategorys"); // dispatch返回的promise在数据更新且界面更新才成功
+    this.$store.dispatch("getShops")   // 此dispatch返回的promise在数据更新之后就成功了
+    await this.$store.dispatch("getCategorys") // 此dispatch返回的promise在数据更新且界面更新才成功
+    //轮播
     new Swiper(".swiper-container", {
       loop: true, // 循环模式选项
       //autoplay:true,
@@ -172,7 +174,7 @@ export default {
       pagination: {
         el: ".swiper-pagination",
       },
-    });
+    })
   },
   watch: {
     /* 

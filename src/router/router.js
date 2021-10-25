@@ -8,6 +8,11 @@ import Order from '@/pages/Order/Order.vue'
 import Profile from '@/pages/Profile/Profile.vue'
 import Login from '@/pages/Login/Login.vue'
 import Logout from '@/pages/Logout/logout.vue'
+import Shop from '@/pages/Shop/Shop.vue'
+import ShopGoods from '@/pages/Shop/ShopGoods/ShopGoods.vue'
+import ShopInfo from '@/pages/Shop/ShopGoods/ShopInfo.vue'
+import ShopRatings from '@/pages/Shop/ShopGoods/ShopRatings.vue'
+
 
 export default [
   {
@@ -38,6 +43,29 @@ export default [
     path: '/logout',
     component:Logout
   },
+  {
+    path:'/shop',
+    component:Shop,
+    children: [
+      {
+        path: '/shop/goods',
+        component:ShopGoods
+      },
+      {
+        path: '/shop/ratings',
+        component: ShopRatings
+      },
+      {
+        path: '/shop/info',
+        component:ShopInfo
+      },
+      {
+        path: '',
+        redirect: '/shop/goods'
+      }
+    ]
+  },
+
   {
     path:'/',
     redirect: '/msite'
