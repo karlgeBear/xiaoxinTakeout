@@ -12,9 +12,6 @@
   export default {
     props: {
       title: String
-    },
-    mounted(){
-      console.log(this.$store.state.address)
     }
   }
 
