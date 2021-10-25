@@ -8,6 +8,9 @@ import {  //导入异步请求
   reqAddress,
   reqCategorys,
   reqShops,
+  reqShopInfo,
+  reqShopGoods,
+  reqShopRatings,
   reqAutoLogin
 } from '../api'
 
@@ -15,6 +18,9 @@ import {
   RECEIVE_ADDRESS,
   RECEIVE_CATEGORYS,
   RECEIVE_SHOPS,
+  RECEIVE_SHOP_INFO,
+  RECEIVE_SHOP_GOODS,
+  RECEIVE_SHOP_RATINGS,
   RECEIVE_TOKEN,
   RECEIVE_USER,
   RESET_TOKEN,
@@ -29,7 +35,7 @@ export default {
     const result = await reqAddress(longitude,latitude)
     //console.log(result)
     // 请求成功，则提交给mutations
-    if (result.code == 0){
+    if (result.code === 0){
       const address = result.data
       commit(RECEIVE_ADDRESS,address)
     }
@@ -41,7 +47,7 @@ export default {
     const result = await reqCategorys()
     // 请求成功，则提交给mutations
     //console.log(result)
-    if (result.code == 0){
+    if (result.code === 0){
       const cateGorys = result.data
       commit(RECEIVE_CATEGORYS,cateGorys)
     }
@@ -53,9 +59,37 @@ export default {
     //发异步请求
     const result = await reqShops(longitude,latitude)
     // 请求成功，则提交给mutations
-    if (result.code == 0){
+    if (result.code === 0){
       const shops = result.data
       commit(RECEIVE_SHOPS,shops)
+    }
+  },
+
+  // 获取商家店铺信息
+  async getShopInfo({commit}){
+    // 发送异步请求
+    const result = await reqShopInfo()
+    if (result.code === 0){
+      const shopInfo = result.data
+      commit(RECEIVE_SHOP_INFO,shopInfo)
+    }
+  },
+  // 获取商家食品信息
+  async getShopGoods({commit}){
+    // 发送异步请求
+    const result = await reqShopGoods()
+    if (result.code === 0){
+      const shopGoods = result.data
+      commit(RECEIVE_SHOP_GOODS,shopGoods)
+    }
+  },
+  // 获取用户对该商家食品的评价信息
+  async getShopRatings({commit}){
+    // 发送异步请求
+    const result = await reqShopRatings()
+    if (result.code === 0){
+      const shopRatings = result.data
+      commit(RECEIVE_SHOP_RATINGS,shopRatings)
     }
   },
 
@@ -91,11 +125,11 @@ export default {
     const token = state.token
     if (token){
       // 没有token，异步获取user
-      const result = await reqAutoLogin(token                )
+      const result = await reqAutoLogin(token)
       if (result.code === 0){
         // 取得用户信息
         const user = result.data
-        console.log('autoLoginSucessful:',user)
+        //console.log('autoLoginSucessful:',user)
         commit(RECEIVE_USER,user)
       }
     }
