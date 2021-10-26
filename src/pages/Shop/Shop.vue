@@ -1,9 +1,9 @@
 <template>
   <div>
-    <shop-header/>
+    <shop-header :shopInfo="shopInfo"/>
     <div class="tab">
       <div class="tab-item">
-        <router-link to="/shop/goods" replace>点餐</router-link>
+        <router-link to="/shop/goods">点餐</router-link>
       </div>
       <div class="tab-item">
         <router-link to="/shop/ratings" replace>评价</router-link>
@@ -19,9 +19,13 @@
 
 <script type='text/ecmascript-6'>
 import ShopHeader from '../../components/ShopHeader/ShopHeader.vue'
+import { mapState } from 'vuex'
 export default {
   components:{
     ShopHeader
+  },
+  computed: {
+    ...mapState(['shopInfo'])
   },
   mounted(){
     // 将info从接口中请求获取到了state中
