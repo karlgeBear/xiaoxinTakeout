@@ -2,8 +2,11 @@
   <div>
     <div class="goods">
       <div class="menu-wrapper" ref="left">
-        <ul>
-          <li class="menu-item current" v-for="shopGood,index in shopGoods" :key="index">
+        <ul ref="leftUI">
+          <li class="menu-item" 
+          v-for="shopGood,index in shopGoods" :key="index" 
+          :class="{current:index===currentIndex}" 
+          @click="clickItem(index)">
             <span class="text bottom-border-1px">
               <img class="icon" v-if="shopGood.icon" :src="shopGood.icon" >
               {{shopGood.name}}
@@ -11,8 +14,8 @@
           </li>
         </ul>
       </div>
-      <div class="foods-wrapper">
-        <ul>
+      <div class="foods-wrapper" ref="right">
+        <ul ref="rightUI">
           <li class="food-list food-list-hook" v-for="shopGood,index in shopGoods">
             <h1 class="title">{{shopGood.name}}</h1>
             <ul>
@@ -49,13 +52,87 @@ import { mapState } from 'vuex'
 import BScroll from '@better-scroll/core'
 export default {
   data () {
-    return {}
+    return {
+      // 1. 右侧列表滑动的Y轴坐标： ScrollY 在滑动过程中不断改变
+      scrollY:0,
+      // 2. 右侧每个分类<li>的top值得数组tops：第一次列表显示统计后面不再变化
+      tops:[]
+    }
   },
   computed:{
-    ...mapState(['shopGoods'])
+    ...mapState(['shopGoods']),
+    currentIndex(){
+      const {scrollY, tops} = this
+      let index =  tops.findIndex((top, index) => scrollY>=top && scrollY<tops[index+1])
+      if (index !== this.index && this.leftScroll) {  // 当右侧滑动时，currentIndex与左侧li的index不相等时  && 数据初始化并没有this.leftScroll,所以需要判断
+        // 保存当前index，用于随右侧选项滑动，判断左右两端的项是否对应
+        this.index = index
+        // 让左侧列表滑动到右侧滑动对应的那一项
+        const li = this.$refs.leftUI.children[index]
+        // 滚动到目标元素
+        this.leftScroll.scrollToElement(li,300)
+      }
+      return index
+    }
   },
-  mounted(){
-    let scroll = new BScroll(this.$refs.left)
+  methods:{
+    //初始化滑动
+    _initScroll (){
+      this.leftScroll = new BScroll(this.$refs.left,{
+        // 分发click事件，不指定的话，原生js指定的click会默认阻止
+        click:true
+      })
+      this.rightScroll = new BScroll(this.$refs.right,{
+        click:true,
+        probeType:1  // 非实时（低频率） / 触摸
+      })
+      // 给右侧列表绑定scoll监听
+      this.rightScroll.on('scroll',({x,y}) => {
+        console.log('scroll',x,y)
+        this.scrollY = Math.abs(y)
+      })
+
+      // 给右侧列表绑定scrollEnd监听
+      this.rightScroll.on('scrollEnd',({x,y}) => {
+        console.log('scrollEnd',x,y)
+        this.scrollY = Math.abs(y)
+      })
+    },
+    // 统计右侧所有分类li的top的数组
+    _initTops(){
+      const tops = []
+      let top =0 
+      tops.push(top)
+      const lis = Array.prototype.slice.call(this.$refs.rightUI.children)
+      lis.forEach(li => {
+        top += li.clientHeight
+        tops.push(top)
+      })
+
+      //更新tops数据
+      this.tops =tops
+      console.log('tops',tops)
+    },
+    
+    // 给滑动左侧绑定事件监听
+    clickItem(index){
+      // 获取点击左侧选项对应右侧li的scrollY的值
+      let top = this.tops[index]
+      // 立即更新scroll为目标值（立即选中当前分类项）
+      this.scrollY = top
+      // 让右侧滑动到对应的位置
+      this.rightScroll.scrollTo(0, -top, 300)
+
+    }
+   
+  },
+  watch:{
+    shopGoods(){  //监视shopGoods的列表数据的改变
+    this.$nextTick(() => {  // 数据列表显示了（将回调延迟到下次 DOM 更新循环之后执行：数据更新且界面显示之后）
+      this._initScroll()
+      this._initTops()
+    })
+    }
   }
 }
 
