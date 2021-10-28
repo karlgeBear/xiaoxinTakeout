@@ -2,7 +2,7 @@
 包含n个直接更新状态数据的方法的对象
 方法不可以包含异步和逻辑处理的代码
 */
-
+import Vue from 'vue'
 import {
   RECEIVE_ADDRESS,
   RECEIVE_CATEGORYS,
@@ -13,7 +13,9 @@ import {
   RECEIVE_TOKEN,
   RECEIVE_USER,
   RESET_TOKEN,
-  RESET_USER
+  RESET_USER,
+  INCREMENT_FOOD_COUNT,
+  DECREMENT_FOOD_COUNT
 } from './mutations-type.js'
 
 export default {  //// 通过[]来设置对象中的属性名
@@ -47,6 +49,23 @@ export default {  //// 通过[]来设置对象中的属性名
   },
   [RESET_USER] (state) {
     state.token = ''
+  },
+
+  [INCREMENT_FOOD_COUNT] (state,{food}) {
+    if(!food.count){  // 第一次增加时，没有food对象中没有count这个属性
+      // food.count = 1  // 给food添加属性count，值为1（
+      //更新了数据但界面不变 ?,
+      // 此时这个新增 property 不是响应式的，
+      //Vue 无法探测普通的新增 property)
+      Vue.set( food, 'count', 1 )  //给有数据绑定的对象  添加指定属性名 和 值 的属性(有绑定)
+    } else{
+      food.count++
+    }
+  },
+  [DECREMENT_FOOD_COUNT] (state,{food}) {
+    if (food.count) {
+      food.count--
+    }
   }
 
 }

@@ -24,7 +24,9 @@ import {
   RECEIVE_TOKEN,
   RECEIVE_USER,
   RESET_TOKEN,
-  RESET_USER
+  RESET_USER,
+  INCREMENT_FOOD_COUNT,
+  DECREMENT_FOOD_COUNT
 } from './mutations-type.js'
 
 export default {
@@ -132,6 +134,15 @@ export default {
         //console.log('autoLoginSucessful:',user)
         commit(RECEIVE_USER,user)
       }
+    }
+  },
+
+  // 更新FoodCount的值
+  updateFoodCount({commit},{isAdd,food}){
+    if(isAdd) { // 增加
+      commit(INCREMENT_FOOD_COUNT, {food})
+    } else { // 减少
+      commit(DECREMENT_FOOD_COUNT, {food})
     }
   }
 

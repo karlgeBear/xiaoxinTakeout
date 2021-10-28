@@ -3,9 +3,12 @@ import App from './App.vue'
 import router from './router' 
 import store from './vuex/store'
 import MockServe from './mock/mockServe'
-import { Button } from 'mint-ui';
+import { Button } from 'mint-ui'
+import CartControl from './components/CartControl/CartControl.vue'
 
-Vue.component(Button.name, Button);
+//全局注册组件
+Vue.component(Button.name, Button)
+Vue.component('CartControl',CartControl)
 
 import 'lib-flexible'
 

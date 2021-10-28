@@ -34,8 +34,8 @@
                     <span class="now">￥{{food.price}}</span>
                     <span class="old">￥{{food.oldPrice}}</span>
                   </div>
-                  <div class="cartcontrol-wrapper">
-                    CartControl组件
+                  <div class="cartcontrol-wrapper" :food="food">
+                    <CartControl :food="food" />
                   </div>
                 </div>
               </li>

@@ -14,4 +14,9 @@ export const RECEIVE_USER = 'receive_user'
 export const RESET_USER = 'reset_user'
 export const RESET_TOKEN = 'reset_token'
 
+export const INCREMENT_FOOD_COUNT = 'increment_food_count'
+export const DECREMENT_FOOD_COUNT = 'decrement_food_count'
+
+
+
 
