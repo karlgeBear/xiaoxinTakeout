@@ -21,4 +21,6 @@
 - 在页面中引入在线的iconfont样式
 ## 使用自带库
 1. lodash: 一个 JavaScript 的实用工具库, 表现一致性, 模块化, 高性能, 以及 可扩展
+    - chunk(arr,num):将arr切割为二维数组，每个素组的长度为num
+    - throttle(fn,time):节流
 
