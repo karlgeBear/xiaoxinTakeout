@@ -19,7 +19,10 @@ import { mapState } from 'vuex'
 import HeaderTop from '../../components/HeaderTop/HeaderTop.vue'
 export default {
   computed:{
-    ...mapState(['user'])
+    // ...mapState(['user'])
+    ...mapState({
+      user: state => state.user.user
+    })
   },
   components: {
     HeaderTop

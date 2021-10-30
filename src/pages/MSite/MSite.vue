@@ -128,7 +128,13 @@ export default {
     HeaderTop,
   },
   computed: {
-    ...mapState(["address", "categorys", "shops","user"]), //等同于：stateName(){return this.$store.state['stateName']}
+    //...mapState(["address", "categorys", "shops","user"]), //等同于：stateName(){return this.$store.state['stateName']}
+    ...mapState({
+      address: state => state.msite.address,
+      categorys: state => state.msite.categorys,
+      shops: state => state.msite.shops,
+      user: state => state.user.user
+    }),
 
     /* 
       根据一维数组生成二维数组
