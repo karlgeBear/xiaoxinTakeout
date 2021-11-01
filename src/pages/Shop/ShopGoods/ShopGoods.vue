@@ -19,7 +19,7 @@
           <li class="food-list food-list-hook" v-for="shopGood,index in shopGoods">
             <h1 class="title">{{shopGood.name}}</h1>
             <ul>
-              <li class="food-item bottom-border-1px" v-for="food in shopGood.foods">
+              <li class="food-item bottom-border-1px" v-for="food in shopGood.foods" @click="showFood(food)">
                 <div class="icon">
                   <img width="57" height="57" :src="food.icon">
                 </div>
@@ -44,23 +44,36 @@
         </ul>
       </div>
     </div>
+    <Food :food="selectedFood" ref="food"/>
+    <shopcart />
   </div>
 </template>
 
 <script type='text/ecmascript-6'>
 import { mapState } from 'vuex'
 import BScroll from '@better-scroll/core'
+import Food from '@/components/Food/food.vue'
+import shopcart from '@/components/shopCart/shopCart.vue'
 export default {
+  components:{
+    Food,
+    shopcart
+  },
   data () {
     return {
       // 1. 右侧列表滑动的Y轴坐标： ScrollY 在滑动过程中不断改变
       scrollY:0,
       // 2. 右侧每个分类<li>的top值得数组tops：第一次列表显示统计后面不再变化
-      tops:[]
+      tops:[],
+      
+      selectedFood:{}
     }
   },
   computed:{
-    ...mapState(['shopGoods']),
+    //...mapState(['shopGoods']),
+    ...mapState({
+      shopGoods: state => state.shop.shopGoods
+    }),
     currentIndex(){
       const {scrollY, tops} = this
       let index =  tops.findIndex((top, index) => scrollY>=top && scrollY<tops[index+1])
@@ -123,6 +136,13 @@ export default {
       // 让右侧滑动到对应的位置
       this.rightScroll.scrollTo(0, -top, 300)
 
+    },
+
+    showFood(selectedFood){
+      // 将选中的菜品信息保存下来
+      this.selectedFood = selectedFood
+      // 取子组件food的方法
+      this.$refs.food.toggleShow()
     }
    
   },
