@@ -25,7 +25,10 @@ export default {
     ShopHeader
   },
   computed: {
-    ...mapState(['shopInfo'])
+    // ...mapState(['shopInfo'])
+    ...mapState({
+      shopInfo: state => state.shop.shopInfo
+    })
   },
   mounted(){
     // 将info从接口中请求获取到了state中
