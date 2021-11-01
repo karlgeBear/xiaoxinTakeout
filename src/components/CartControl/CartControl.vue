@@ -1,14 +1,15 @@
 <template>
   <div class="cartcontrol">
     <transition name="move">
-      <div class="iconfont icon-jianshao1" v-show="food.count" @click="updateFoodCount(false)"></div>
+      <div class="iconfont icon-jianshao1" v-show="food.count" @click.stop="updateFoodCount(false)"></div>
     </transition>
     <div class="cart-count" v-show="food.count">{{food.count}}</div>
-    <div class="iconfont icon-icon_add-circle1" @click="updateFoodCount(true)"></div>
+    <div class="iconfont icon-icon_add-circle1" @click.stop="updateFoodCount(true)"></div>
   </div>
 </template>
 
 <script type='text/ecmascript-6'>
+import throttle from 'lodash/throttle'
 export default {
   data () {
     return {
@@ -19,11 +20,11 @@ export default {
   },
   methods:{
     // 更新food的count
-    updateFoodCount(isAdd){ 
+    updateFoodCount: throttle(function(isAdd) {  // 处理节流的函数
       const {food} = this
       // 通知action更新
       this.$store.dispatch('updateFoodCount',{isAdd,food})
-    }
+    }, 1000)
   }
 }
 
@@ -59,14 +60,14 @@ export default {
           }
         100% {
           left 0px
-          -webkit-transform: rotate(-360deg)
+          -webkit-transform: rotate(-180deg)
           opacity 1
           }
       }
       @-webkit-keyframes move-in {
         0% {
           left 0px
-          -webkit-transform: rotate(-360deg)
+          -webkit-transform: rotate(-180deg)
           opacity 1
           }
         100% {
