@@ -9,6 +9,7 @@ export const RECEIVE_SHOPS = 'receive_shops'
 export const RECEIVE_SHOP_INFO = 'receive_shop_info'
 export const RECEIVE_SHOP_GOODS = 'receive_shop_goods'
 export const RECEIVE_SHOP_RATINGS = 'receive_shop_ratings'
+export const RECEIVE_SHOP = 'receive_shop'
 export const CLEAR_CART = 'clear_cart'
 
 export const RECEIVE_TOKEN = 'receive_token'
