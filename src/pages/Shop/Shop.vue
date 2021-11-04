@@ -1,15 +1,15 @@
 <template>
   <div>
-    <shop-header :shopInfo="shopInfo"/>
+    <shop-header/>
     <div class="tab">
       <div class="tab-item">
-        <router-link to="/shop/goods">点餐</router-link>
+        <router-link :to="`/shop/${id}/goods`">点餐</router-link>
       </div>
       <div class="tab-item">
-        <router-link to="/shop/ratings" replace>评价</router-link>
+        <router-link :to="`/shop/${id}/ratings`" replace>评价</router-link>
       </div>
       <div class="tab-item">
-        <router-link to="/shop/info" replace>商家</router-link>
+        <router-link :to="`/shop/${id}/info`" replace>商家</router-link>
       </div>
     </div>
 
@@ -20,21 +20,33 @@
 <script type='text/ecmascript-6'>
 import ShopHeader from '../../components/ShopHeader/ShopHeader.vue'
 import { mapState } from 'vuex'
+import Vue from 'vue'
 export default {
+  props: ['id'],
   components:{
     ShopHeader
   },
   computed: {
     // ...mapState(['shopInfo'])
-    ...mapState({
-      shopInfo: state => state.shop.shopInfo
-    })
+    // ...mapState({
+    //   shopInfo: state => state.shop.shop.info || {}
+    // })
   },
   mounted(){
     // 将info从接口中请求获取到了state中
-    this.$store.dispatch("getShopInfo")
-    this.$store.dispatch("getShopGoods")
-    this.$store.dispatch("getShopRatings")
+    // this.$store.dispatch("getShopInfo")
+    // this.$store.dispatch("getShopGoods")
+    // this.$store.dispatch("getShopRatings")
+
+    //得到当前请求的id
+    const id = this.id
+    // 分发actions请求商家数据
+    this.$store.dispatch("getShop",id)
+
+    console.log('id',id)
+    //let res=JSON.parse(JSON.stringify(this.$store.state.shop));  
+    //console.log('shopinfo',res)
+    
   }
 }
 

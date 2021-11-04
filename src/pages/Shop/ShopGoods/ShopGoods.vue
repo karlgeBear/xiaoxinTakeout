@@ -72,7 +72,7 @@ export default {
   computed:{
     //...mapState(['shopGoods']),
     ...mapState({
-      shopGoods: state => state.shop.shopGoods
+      shopGoods: state => state.shop.shop.goods || []
     }),
     currentIndex(){
       const {scrollY, tops} = this
@@ -83,7 +83,10 @@ export default {
         // 让左侧列表滑动到右侧滑动对应的那一项
         const li = this.$refs.leftUI.children[index]
         // 滚动到目标元素
-        this.leftScroll.scrollToElement(li,300)
+        if (li){
+          this.leftScroll.scrollToElement(li,300)
+        }
+        
       }
       return index
     }
@@ -91,25 +94,32 @@ export default {
   methods:{
     //初始化滑动
     _initScroll (){
-      this.leftScroll = new BScroll(this.$refs.left,{
+      if (!this.leftScroll) {
+        console.log('创建scroll对象')
+        this.leftScroll = new BScroll(this.$refs.left,{
         // 分发click事件，不指定的话，原生js指定的click会默认阻止
-        click:true
-      })
-      this.rightScroll = new BScroll(this.$refs.right,{
-        click:true,
-        probeType:1  // 非实时（低频率） / 触摸
-      })
-      // 给右侧列表绑定scoll监听
-      this.rightScroll.on('scroll',({x,y}) => {
-        console.log('scroll',x,y)
-        this.scrollY = Math.abs(y)
-      })
+          click:true
+        })
+        this.rightScroll = new BScroll(this.$refs.right,{
+          click:true,
+          probeType:1  // 非实时（低频率） / 触摸
+        })
+       // 给右侧列表绑定scoll监听
+        this.rightScroll.on('scroll',({x,y}) => {
+          console.log('scroll',x,y)
+          this.scrollY = Math.abs(y)
+        })
 
-      // 给右侧列表绑定scrollEnd监听
-      this.rightScroll.on('scrollEnd',({x,y}) => {
-        console.log('scrollEnd',x,y)
-        this.scrollY = Math.abs(y)
-      })
+        // 给右侧列表绑定scrollEnd监听
+        this.rightScroll.on('scrollEnd',({x,y}) => {
+          console.log('scrollEnd',x,y)
+          this.scrollY = Math.abs(y)
+        })
+      }else{
+        this.leftScroll.refresh()
+        this.rightScroll.refresh()
+
+      }
     },
     // 统计右侧所有分类li的top的数组
     _initTops(){
@@ -145,6 +155,15 @@ export default {
       this.$refs.food.toggleShow()
     }
    
+  },
+  mounted () {
+    // 如果数据已经有了, 直接做初始化的操作
+    if (this.shopGoods.length>0) {
+      console.log('mounted goods')
+      this._initScroll()
+      this._initTops()
+    }
+    console.log('3333',this.shopGoods)
   },
   watch:{
     shopGoods(){  //监视shopGoods的列表数据的改变

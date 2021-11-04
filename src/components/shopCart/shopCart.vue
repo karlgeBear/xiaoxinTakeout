@@ -55,10 +55,13 @@ export default {
       isShow: false
     }
   },
+  created(){
+    console.log('info',this.$store.state.shop)
+  },
   computed:{
     ...mapState({
       shopCart: state => state.shop.shopCart,
-      info: state => state.shop.shopInfo,
+      info: state => state.shop.shop.info || {},
     }),
     ...mapGetters(['totalCount', 'totalPrice']),
 

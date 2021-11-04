@@ -109,6 +109,7 @@
 </template>
 
 <script type='text/ecmascript-6'>
+import { mapState} from 'vuex'
 export default {
   data () {
     return {
@@ -117,15 +118,12 @@ export default {
       supportClasses: ["activity-green","activity-red","activity-orange"]
     }
   },
-  props:['shopInfo']
-  // computed:{
-  //   ...mapState(['shopInfo'])
-  // }
-  //methods:{
-  //  activityShow(){
-  //    this.isActivityShow = !this
-  //  }
-  //}
+  // props:['shopInfo'],
+  computed:{
+    ...mapState({
+      shopInfo: state => state.shop.shop.info || {}
+    })
+  }
 }
 
 </script>
