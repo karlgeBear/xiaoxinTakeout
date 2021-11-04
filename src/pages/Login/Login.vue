@@ -42,7 +42,7 @@
                 </section>
                 <section class="login_message">
                   <input type="text" maxlength="11" placeholder="验证码" v-model="captcha">
-                  <img class="get_verification" src="/api/captcha" alt="captcha" @click="changeCaptcha">
+                  <img class="get_verification" src="/api/captcha" alt="captcha" @click="changeCaptcha" ref="captcha">
                 </section>
               </section>
             </div>
@@ -169,6 +169,7 @@ export default {
           return
         }else if(!/^[0-9a-z]{4}$/.test(captcha)){
           this.alertShow = true
+          this.$refs.captcha.src = '/api/captcha?time=' + new Date()
           this.alertText = '请输入图片对应的的验证码'
           return
         }
