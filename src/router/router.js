@@ -44,10 +44,13 @@ export default [
     component:Logout
   },
   {
-    path:'/shop',
+    path:'/shop/:id',
     component:Shop,
+    props: true,  // 布尔模式 （将所有prams参数转化为标签属性传递给子路由组件）
+    //props: route => ({id: route.params.id}), //函数模式 
     children: [
       {
+        name:'goods',
         path: '/shop/goods',
         component:ShopGoods
       },
