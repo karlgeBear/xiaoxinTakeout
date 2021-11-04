@@ -62,7 +62,9 @@ export const reqShopInfo = () => ajax('/info')
 export const reqShopGoods = () => ajax('/goods')
     //获取用户评价信息
 export const reqShopRatings = () => ajax('/ratings')
+    // 获取指定的shop
+export const reqShop = (id) => ajax('/shop/' + id)
 
-// ajax('/info').then((response) => {
-//   console.log(response)
-// })
+ajax('/shop/1').then((response) => {
+  console.log('/shop/1',response)
+})
