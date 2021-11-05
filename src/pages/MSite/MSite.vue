@@ -184,7 +184,7 @@ export default {
   methods:{
     toShop(id){
       if (this.$store.state.user.user._id){
-        this.$router.push({name:'goods',params:{id:id}})
+        this.$router.push(`/shop/${id}`)
       }else{
         // console.log(this.user)  // {__ob__: observer}}
         console.log(this.user._id)  // undefined
