@@ -50,21 +50,20 @@ export default [
     //props: route => ({id: route.params.id}), //函数模式 
     children: [
       {
-        name:'goods',
-        path: '/shop/goods',
+        path: 'goods',
         component:ShopGoods
       },
       {
-        path: '/shop/ratings',
+        path: 'ratings',
         component: ShopRatings
       },
       {
-        path: '/shop/info',
+        path: 'info',
         component:ShopInfo
       },
       {
         path: '',
-        redirect: '/shop/goods'
+        redirect: 'goods'
       }
     ]
   },

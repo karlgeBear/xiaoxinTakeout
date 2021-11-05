@@ -21,6 +21,7 @@
 import ShopHeader from '../../components/ShopHeader/ShopHeader.vue'
 import { mapState } from 'vuex'
 import Vue from 'vue'
+import saveShopCart from '@/untils/index.js'
 export default {
   props: ['id'],
   components:{
@@ -39,6 +40,7 @@ export default {
     // this.$store.dispatch("getShopRatings")
 
     //得到当前请求的id
+    //const id = this.$route.params.id
     const id = this.id
     // 分发actions请求商家数据
     this.$store.dispatch("getShop",id)
@@ -46,7 +48,27 @@ export default {
     console.log('id',id)
     //let res=JSON.parse(JSON.stringify(this.$store.state.shop));  
     //console.log('shopinfo',res)
+
+    // 给窗口绑定一个卸载的监听
+    window.addEventListener('unload',()=>{
+      const {shop:{id},shopCart} = this.shop  //多层解构
+      // 将当前商家数据保存
+      saveShopCart(id,shopCart)
+    })
     
+  },
+  computed:{
+    ...mapState({
+      shop: state => state.shop
+    })
+  },
+
+  // 在组件销毁之前，在sessionStorage中保存shop.shop.id : {shop.shopCart.index:shop.shopCart.count
+  beforeDestroy(){  // 页面刷新，不会执行，那shopCart减一下，刷新一下数据就不会被保存到sesssionStorage,还是原来的值？
+    const {shop:{id},shopCart} = this.shop  //多层解构
+    console.log('beforeDestroy:',id,shopCart)
+    // 将当前商家数据保存
+    saveShopCart(id,shopCart)
   }
 }
 

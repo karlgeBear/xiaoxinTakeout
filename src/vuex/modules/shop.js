@@ -2,6 +2,7 @@
   对应shop功能模块的配置对象
 */
 import Vue from 'vue'
+import { getShopCart } from '../../untils'
 
 import {  //导入异步请求
   // reqShopInfo,
@@ -37,13 +38,13 @@ const mutations = {
   // [RECEIVE_SHOP_RATINGS] (state,shopRatings) {
   //   state.shopRatings = shopRatings
   // },
-  [RECEIVE_SHOP] (state,{shop={}}){
+  [RECEIVE_SHOP] (state,{shop={}, shopCart=[]}){
     /* 
     1. 接收一个新的数据
     2. 重置数据: 利用形参默认值
     */
     state.shop = shop
-    //state.shopCart = shopCart
+    state.shopCart = shopCart
   },
   [INCREMENT_FOOD_COUNT] (state,{food}) {
     if(!food.count){  // 第一次增加时，没有food对象中没有count这个属性
@@ -119,8 +120,10 @@ const actions = {
     const result = await reqShop(id)
     if (result.code === 0){
       const shop = result.data
+      // 读取到当前商家的shopCart数组
+      const shopCart = getShopCart(shop)
       console.log('shop:',shop)
-      commit(RECEIVE_SHOP,{shop})
+      commit(RECEIVE_SHOP,{shop,shopCart})
     }
 
   },
