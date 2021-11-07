@@ -1,6 +1,6 @@
 <template>
   <div>
-    ShopRatings组件
+    aShopRatings组件
   </div>
 </template>
 
