@@ -183,14 +183,15 @@ export default {
   },
   methods:{
     toShop(id){
-      if (this.$store.state.user.user._id){
-        this.$router.push(`/shop/${id}`)
-      }else{
-        // console.log(this.user)  // {__ob__: observer}}
-        console.log(this.user._id)  // undefined
-        // console.log(JSON.parse(JSON.stringify(this.user))._id)  // 转为普通对象，得到深拷贝的原始数据对象
-        alert('请先登录')
-      }
+      this.$router.push(`/shop/${id}`)
+    //   if (this.$store.state.user.user._id){
+    //     this.$router.push(`/shop/${id}`)
+    //   }else{
+    //     // console.log(this.user)  // {__ob__: observer}}
+    //     console.log(this.user._id)  // undefined
+    //     // console.log(JSON.parse(JSON.stringify(this.user))._id)  // 转为普通对象，得到深拷贝的原始数据对象
+    //     alert('请先登录')
+    //   }
     }
   },
   watch: {
