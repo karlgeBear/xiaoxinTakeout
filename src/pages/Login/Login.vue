@@ -9,7 +9,7 @@
           </div>
         </div>
         <div class="login_content">
-          <form @submit.prevent="login">
+          <form @submit.prevent="login" @keyup.enter="login">
             <div :class="{on:isShowSms}">
               <section class="login_message">
                 <input type="tel" maxlength="11" placeholder="手机号" v-model="phone">
@@ -196,6 +196,22 @@ export default {
     closeTip () {
         this.alertShow = false
     }
+  },
+
+  // 在当前组件对象被创建前调用，不能直接访问this(不是组件对象)
+  // 但可以通过next(component => {}), 在回调函数中访问组件对象
+  beforeRouterEnter(to,from,next){
+    console.log('beforeRouterEnter')
+    next((component) => {
+      const token = component.$store.state.user.token
+      // 如果已经登陆，强制跳转到个人中心
+      if (token){
+        next('/profile')
+      } else{  //否则放行
+        next()
+      }
+    })
+
   }
 }
 
