@@ -14,7 +14,7 @@ const app = express()
 const http = require('http')
 const server = http.createServer(app)
 
-// 声明使用静态中间件
+// 声明使用静态中间件(可以加载静态路由，如启动活可以访问http://localhost:3000/images/img.jpg静态文件)
 app.use(express.static('public'))
 // 声明使用解析post请求的中间件
 app.use(express.urlencoded({extended: true})) // 请求体参数是: name=tom&pwd=123
